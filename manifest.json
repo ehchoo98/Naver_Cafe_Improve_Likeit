@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "네이버 카페 좋아요 개선",
+  "version": "1.0.0.0",
+  "description": "네이버 카페 글의 좋아요 버튼을 누를 때, 발생하는 문제들을 개선합니다.",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "*://cafe.naver.com/*ArticleRead.nhn*"
+      ],
+      "all_frames": true
+    }
+  ]
+}
