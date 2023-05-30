@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "네이버 카페 좋아요 버튼",
-  "version": "1.0.0.0",
+  "version": "1.0.1.1",
   "description": "네이버 카페 게시글의 좋아요 버튼을 누를 때, 발생하는 문제들을 개선합니다.",
   "icons": {
     "16": "images/icon-16.png",
@@ -17,5 +17,11 @@
       ],
       "all_frames": true
     }
-  ]
+  ],
+  "permissions": [
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "scripts/background.js"
+  }
 }
