@@ -18,3 +18,5 @@
 
 ## History
 1.0.0.0 : Extension Released
+
+1.0.1.1 : Context menu Included
