@@ -9,14 +9,7 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse)=>{
     sendResponse(message)
     return true
 })
-/*
-chrome.action.onClicked.addListener((tab)=>{
-    chrome.tabs.sendMessage(tab.id, 1 ,(response)=>{
-        if(chrome.runtime.lastError){}
-        return response
-    })   
-})
-*/
+
 chrome.runtime.onInstalled.addListener(()=>{
     chrome.action.disable()
 })
