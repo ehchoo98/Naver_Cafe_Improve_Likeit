@@ -23,5 +23,11 @@
   ],
   "background": {
     "service_worker": "scripts/background.js"
+  },
+  "action":{
+    "default_title": "좋아요 버튼",
+    "default_icon": {               
+      "32": "images/icon0-32.png"    
+    }
   }
 }
