@@ -1,16 +1,29 @@
-chrome.contextMenus.onClicked.addListener(function(_info, tab) {
-    chrome.tabs.sendMessage(tab.id,"contextLikeit",(response)=>{ 
-        if(chrome.runtime.lastError){
-            console.warn("WARNING:: Plaese refresh the tab")
-        }
-    })
+chrome.runtime.onMessage.addListener((message,sender,sendResponse)=>{ 
+    if(message=="true"){  
+        chrome.action.setIcon({path : "../images/icon1-32.png", tabId : sender.tab.id}) 
+        chrome.action.enable(sender.tab.id)
+    }else if(message=="false"){
+        chrome.action.setIcon({path : "../images/icon0-32.png", tabId : sender.tab.id})  
+        chrome.action.enable(sender.tab.id)
+    }
+    sendResponse(message)
+    return true
+})
+/*
+chrome.action.onClicked.addListener((tab)=>{
+    chrome.tabs.sendMessage(tab.id, 1 ,(response)=>{
+        if(chrome.runtime.lastError){}
+        return response
+    })   
+})
+*/
+chrome.runtime.onInstalled.addListener(()=>{
+    chrome.action.disable()
 })
 
-chrome.runtime.onInstalled.addListener(()=>{
-    chrome.contextMenus.create({
-        title: "게시글 좋아요",
-        contexts: ["all"],
-        id: "Likeit0",
-        documentUrlPatterns: ["*://cafe.naver.com/*ArticleRead.nhn*"]
-    })
+chrome.tabs.onUpdated.addListener((tabId, changedInfo, tab)=>{
+    if(changedInfo.status=="complete"){
+        chrome.action.setIcon({path : "../images/icon0-32.png", tabId : tabId})  
+        chrome.action.disable(tabId)
+    }
 })

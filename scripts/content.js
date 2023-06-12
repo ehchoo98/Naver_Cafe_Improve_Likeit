@@ -1,73 +1,54 @@
+const doc = window.document
 let loadFirst = true
-let btn = null
+let problem = false
+let likeBtn = null, urlBtn = null
 let like = null
 let clk = null
-let auto = false
+let url = null
+
 const btnFunc = (_mutationList, observer) => {
-    const likeBtn = window.document.querySelector("a.like_no")
-    if(likeBtn){
-        if(loadFirst){
-            btn = likeBtn
-            btn.addEventListener("click", btnEvnt) 
-            window.addEventListener("beforeunload", unloadEvnt)
-            observer.disconnect()   
-            obsBtn.observe(btn, {attributes : true})
-            chrome.runtime.onMessage.addListener(CtmEvnt)
-            
-            loadFirst = false
-        }else{ 
-            clk = sessionStorage.getItem("Clicked") 
-            like = btn.getAttribute("aria-pressed") 
-            load = sessionStorage.getItem("Context")
-            isNotChanged = like===clk
-            if(load!==null){
-                if(isNotChanged&&load=="true"){  
-                    btn.click()  
-                }else{
-                    sessionStorage.removeItem("Context")
-                }
-                top.scroll(sessionStorage.getItem("likeX"),sessionStorage.getItem("likeY"))
-            }else{    
-                if(isNotChanged){
-                    sessionStorage.setItem("Context", false)
-                    softReload()                   
-                }
+    if(loadFirst){
+        urlBtn = doc.querySelector("a#spiButton")
+        likeBtn = doc.querySelector("a.like_no")
+        if(urlBtn && urlBtn.getAttribute('data-url')){
+            top.parent.history.replaceState(null, null, urlBtn.getAttribute('data-url'))
+            if(likeBtn){
+                window.addEventListener("beforeunload", unloadEvnt)
+                likeBtn .addEventListener("click", clkEvnt)
+                observer.disconnect()   
+                obsBtn .observe(likeBtn , {attributeFilter: ["aria-pressed"]})
+                loadFirst = false
             }
-        }        
+        }
+    }else{ 
+        like = likeBtn.getAttribute("aria-pressed")
+        clk = sessionStorage.getItem("clicked")
+        url = sessionStorage.getItem("url") 
+        chrome.runtime.sendMessage(like)
+        
+        if(url){
+            if(window.location.pathname === url){
+                top.scroll(sessionStorage.getItem("likeX"),sessionStorage.getItem("likeY"))
+            }
+            sessionStorage.clear()
+        }else{
+            problem = like === clk
+        }
     }
 }
 
-function btnEvnt(_event){
-    sessionStorage.setItem("Clicked", like)
-}
-
-function CtmEvnt(_,_,sendResponse){
-    sessionStorage.setItem("Context", true)
-    sessionStorage.setItem("Clicked", like)
-    sendResponse(0)
-    softReload()
-    return true;   
-}
-
-function softReload(){
-    auto = true
-    sessionStorage.setItem("likeX", top.scrollX)
-    sessionStorage.setItem("likeY", top.scrollY)
-    window.document.location.replace(window.document.location.href)
+function clkEvnt(){
+    sessionStorage.setItem("clicked", like)
 }
 
 function unloadEvnt(_event){
-    if(!auto){
-        sessionStorage.removeItem("Clicked")
-        sessionStorage.removeItem("likeX")  
-        sessionStorage.removeItem("likeY")
+    sessionStorage.clear()
+    if(problem){
+        sessionStorage.setItem("url", window.location.pathname)
+        sessionStorage.setItem("likeX", top.scrollX)
+        sessionStorage.setItem("likeY", top.scrollY)
     }
 }
 
 const obsBtn = new MutationObserver(btnFunc)
 obsBtn.observe(window.document, {childList: true, subtree: true })
-
-
-
-
-
