@@ -7,7 +7,7 @@ let prbl = false, like = null, clicked = null
 let reload = url === sessionStorage.getItem("previous_url")
 let preX = sessionStorage.getItem("likeX")
 let preY = sessionStorage.getItem("likeY")
-//let action = sessionStorage.getItem("action")
+let action = sessionStorage.getItem("action")
 
 sessionStorage.clear()
 
@@ -24,7 +24,7 @@ const btnFunc = (_mutationList, observer) => {
         if(likeBtn){
             window.addEventListener("beforeunload", unloadEvnt)
             likeBtn.addEventListener("click", btnEvnt)
-            //chrome.runtime.onMessage.addListener(actEvnt)
+            chrome.runtime.onMessage.addListener(actEvnt)
             observer.disconnect()  
             obsBtn.observe(likeBtn, {attributeFilter: ["aria-pressed"]})
             loadLike = false  
@@ -36,7 +36,7 @@ const btnFunc = (_mutationList, observer) => {
         if(reload && !clicked){
             top.scroll(preX,preY)
             reload = false
-            //if(action){likeBtn.click()}
+            if(action){likeBtn.click()}
         }
     }
 }
@@ -44,13 +44,13 @@ const btnFunc = (_mutationList, observer) => {
 function btnEvnt(){
     clicked = like
 }
-/*
+
 function actEvnt(){
     prbl = true
     sessionStorage.setItem("action", true)
     window.location.reload()
 }
-*/
+
 function unloadEvnt(_event){
     if(prbl){
         sessionStorage.setItem("previous_url", url)

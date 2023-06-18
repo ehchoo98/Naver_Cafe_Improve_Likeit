@@ -13,13 +13,11 @@ chrome.runtime.onMessage.addListener((message,sender,sendResponse)=>{
 chrome.runtime.onInstalled.addListener(()=>{
     chrome.action.disable()
 })
-/*
+
 chrome.action.onClicked.addListener((tab)=>{
-    if(like === "false"){
-        chrome.tabs.sendMessage(tab.id,"action")
-    }
+    chrome.tabs.sendMessage(tab.id,"action")
 })
-*/
+
 chrome.tabs.onUpdated.addListener((tabId, changedInfo, tab)=>{
     if(changedInfo.status=="loading"){
         chrome.action.setIcon({path : "../images/icon0-32.png", tabId : tabId})  
