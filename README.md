@@ -20,6 +20,4 @@
 적용 후, 좋아요 버튼을 누르면 해당 기능이 적용됩니다.
 
 ## History
-1.0.0.0 : Extension Released
-
-1.0.1.1 : Context menu Included
+1.0.1.9 : Extension Released
